@@ -15,4 +15,14 @@
 
 <pre>{{object.data|pprint}}</pre>
 
+<table class="table">
+{% for version in object.version_set.all|dictsort:'created' %}
+    <tr>
+        <td>{{version.created}}</td>
+        <td>{{version.created_by.login}}</td>
+        <td>{{version.message}}</td>
+    </tr>
+{% endfor %}
+</table>
+
 {% endblock %}

@@ -18,7 +18,7 @@
             <th>Tags</th>
             <th>Last Updated</th>
         </tr>
-{% for dash in object.dashboard_set.all|dictsort:'title' %}
+{% for dash in dashboard_set.all %}
         <tr>
             <td><a href="{% url 'grafana:dash-detail' dash.pk %}">{{ dash.title }}</a></td>
             <td>
@@ -33,5 +33,22 @@
 {% endfor %}
     </table>
 </div>
+
+
+<table class="table table-bordered">
+    <tr>
+        <th>Title</th>
+        <th>Tags</th>
+        <th>Last Updated</th>
+    </tr>
+{% for version in version_set %}
+    <tr>
+        <td><a href="{% url 'grafana:dash-detail' version.dashboard.pk %}">{{ version.dashboard.title }}</a></td>
+        <td>{{version.created}}</td>
+        <td>{{version.created_by.login}}</td>
+        <td>{{version.message}}</td>
+    </tr>
+{% endfor %}
+</table>
 
 {% endblock %}

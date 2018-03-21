@@ -51,3 +51,35 @@ class DashboardTag(models.Model):
     class Meta:
         managed = False
         db_table = 'dashboard_tag'
+
+
+class DashboardVersion(models.Model):
+    dashboard = models.ForeignKey(
+        'grafana.Dashboard',
+        db_column='dashboard_id',
+        on_delete=models.CASCADE,
+        related_name="version_set",
+    )
+    version = models.IntegerField()
+    created = models.DateTimeField()
+    created_by = models.ForeignKey(
+        'grafana.User',
+        db_column='created_by',
+        on_delete=models.CASCADE,
+    )
+    message = models.TextField()
+    data = models.TextField()
+
+    class Meta:
+        managed = False
+        db_table = 'dashboard_version'
+
+
+class User(models.Model):
+    version = models.IntegerField()
+    login = models.CharField(unique=True, max_length=190)
+    name = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'user'
