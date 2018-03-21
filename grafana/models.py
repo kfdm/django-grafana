@@ -83,3 +83,21 @@ class User(models.Model):
     class Meta:
         managed = False
         db_table = 'user'
+
+
+class ApiKey(models.Model):
+    orginization = models.ForeignKey(
+        'grafana.Organization',
+        db_column='org_id',
+        on_delete=models.CASCADE,
+        related_name="apikey_set",
+    )
+    name = models.CharField(max_length=190)
+    key = models.CharField(unique=True, max_length=190)
+    role = models.CharField(max_length=255)
+    created = models.DateTimeField()
+    updated = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'api_key'
