@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'grafana:org-list' %}">Organizations</a></li>
+    <li class="breadcrumb-item active" aria-current="page">
+        <a href="{% url 'grafana:org-detail' object.orginization.pk %}">{{ object.orginization.name }}</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">{{object.title}}</li>
+  </ol>
+</nav>
+
+
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'grafana:org-list' %}">Organizations</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{object.name}}</li>
+  </ol>
+</nav>
+
+
+<div class="panel panel-default">
+    <table class="table table-bordered">
+{% for dash in object.dashboard_set.all %}
+        <tr>
+            <td><a href="{% url 'grafana:dash-detail' dash.pk %}">{{ dash.title }}</a></td>
+        </tr>
+{% endfor %}
+    </table>
+</div>
+
+{% endblock %}
