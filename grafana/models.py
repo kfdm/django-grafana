@@ -37,3 +37,17 @@ class Dashboard(models.Model):
     class Meta:
         managed = False
         db_table = 'dashboard'
+
+
+class DashboardTag(models.Model):
+    dashboard = models.ForeignKey(
+        'grafana.Dashboard',
+        db_column='dashboard_id',
+        on_delete=models.CASCADE,
+        related_name="tag_set",
+    )
+    term = models.CharField(max_length=50)
+
+    class Meta:
+        managed = False
+        db_table = 'dashboard_tag'

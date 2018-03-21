@@ -13,9 +13,22 @@
 
 <div class="panel panel-default">
     <table class="table table-bordered">
-{% for dash in object.dashboard_set.all %}
+        <tr>
+            <th>Title</th>
+            <th>Tags</th>
+            <th>Last Updated</th>
+        </tr>
+{% for dash in object.dashboard_set.all|dictsort:'title' %}
         <tr>
             <td><a href="{% url 'grafana:dash-detail' dash.pk %}">{{ dash.title }}</a></td>
+            <td>
+                <ul>
+                {% for tag in dash.tag_set.all %}
+                    <li>{{tag.term}}</li>
+                {% endfor %}
+                </ul>
+            </td>
+            <td>{{dash.updated}}</td>
         </tr>
 {% endfor %}
     </table>

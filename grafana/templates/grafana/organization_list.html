@@ -7,7 +7,7 @@
 
 <div class="panel panel-default">
     <table class="table table-bordered">
-{% for org in organization_list %}
+{% for org in organization_list|dictsort:'id' %}
         <tr>
             <td><a href="{% url 'grafana:org-detail' org.pk %}">{{ org.name }}</a></td>
         </tr>
