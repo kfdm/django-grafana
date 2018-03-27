@@ -18,7 +18,7 @@ class Dashboard(models.Model):
     slug = models.CharField(max_length=189)
     title = models.CharField(max_length=189)
     data = models.TextField()
-    orginization = models.ForeignKey(
+    organization = models.ForeignKey(
         'grafana.Organization',
         db_column='org_id',
         on_delete=models.CASCADE,
@@ -86,7 +86,7 @@ class User(models.Model):
 
 
 class ApiKey(models.Model):
-    orginization = models.ForeignKey(
+    organization = models.ForeignKey(
         'grafana.Organization',
         db_column='org_id',
         on_delete=models.CASCADE,

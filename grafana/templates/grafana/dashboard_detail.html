@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load grafana %}
 {% block content %}
 
 
@@ -7,13 +7,13 @@
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{% url 'grafana:org-list' %}">Organizations</a></li>
     <li class="breadcrumb-item active" aria-current="page">
-        <a href="{% url 'grafana:org-detail' object.orginization.pk %}">{{ object.orginization.name }}</a>
+        <a href="{% url 'grafana:org-detail' object.organization.pk %}">{{ object.organization.name }}</a>
     </li>
     <li class="breadcrumb-item active" aria-current="page">{{object.title}}</li>
   </ol>
 </nav>
 
-<pre>{{object.data|pprint}}</pre>
+<pre>{{object.data|json|pprint}}</pre>
 
 <table class="table">
 {% for version in object.version_set.all|dictsort:'created' %}
