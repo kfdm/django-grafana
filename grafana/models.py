@@ -8,6 +8,9 @@ class Organization(models.Model):
     created = models.DateTimeField()
     updated = models.DateTimeField()
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         managed = False
         db_table = 'org'
@@ -25,13 +28,19 @@ class Dashboard(models.Model):
     )
     created = models.DateTimeField()
     updated = models.DateTimeField()
-    updated_by = models.IntegerField(blank=True, null=True)
-    created_by = models.IntegerField(blank=True, null=True)
+    updated_by = models.ForeignKey(
+        'grafana.User',
+        db_column='updated_by',
+        on_delete=models.CASCADE,
+        related_name='+',
+    )
+    created_by = models.ForeignKey(
+        'grafana.User',
+        db_column='created_by',
+        on_delete=models.CASCADE,
+        related_name='dashboard_set',
+    )
     gnet_id = models.BigIntegerField(blank=True, null=True)
-    plugin_id = models.CharField(max_length=255, blank=True, null=True)
-    folder_id = models.BigIntegerField()
-    is_folder = models.BooleanField()
-    has_acl = models.BooleanField()
     uid = models.CharField(max_length=40, blank=True, null=True)
 
     class Meta:
@@ -66,6 +75,7 @@ class DashboardVersion(models.Model):
         'grafana.User',
         db_column='created_by',
         on_delete=models.CASCADE,
+        related_name='+',
     )
     message = models.TextField()
     data = models.TextField()
@@ -79,6 +89,9 @@ class User(models.Model):
     version = models.IntegerField()
     login = models.CharField(unique=True, max_length=190)
     name = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return self.login
 
     class Meta:
         managed = False
@@ -101,3 +114,25 @@ class ApiKey(models.Model):
     class Meta:
         managed = False
         db_table = 'api_key'
+
+
+class DataSource(models.Model):
+    organization = models.ForeignKey(
+        'grafana.Organization',
+        db_column='org_id',
+        on_delete=models.CASCADE,
+        related_name="datasource_set",
+    )
+
+    type = models.CharField(max_length=255)
+    name = models.CharField(max_length=190)
+    access = models.CharField(max_length=255)
+    url = models.CharField(max_length=255)
+    json_data = models.TextField(blank=True, null=True)
+    created = models.DateTimeField()
+    updated = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'data_source'
+        unique_together = (('organization', 'name'),)
