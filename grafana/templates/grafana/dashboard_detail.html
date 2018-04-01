@@ -13,7 +13,7 @@
   </ol>
 </nav>
 
-<pre>{{object.data|json|pprint}}</pre>
+<pre>{{object.json|json}}</pre>
 
 <table class="table">
 {% for version in object.version_set.all|dictsort:'created' %}

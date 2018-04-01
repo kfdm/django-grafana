@@ -1,4 +1,7 @@
+import json
+
 from django.db import models
+
 
 # Referenced using 'inspectdb --database grafana'
 
@@ -46,6 +49,9 @@ class Dashboard(models.Model):
     class Meta:
         managed = False
         db_table = 'dashboard'
+
+    def json(self):
+        return json.loads(self.data)
 
 
 class DashboardTag(models.Model):
