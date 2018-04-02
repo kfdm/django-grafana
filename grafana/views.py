@@ -24,7 +24,8 @@ class OrganizationDetailView(PermissionRequiredMixin, DetailView):
             .prefetch_related('organization', 'tag_set').order_by('title')
         context['version_set'] = models.DashboardVersion.objects\
             .filter(dashboard__organization=self.object)\
-            .prefetch_related('dashboard', 'created_by')
+            .prefetch_related('dashboard', 'created_by')\
+            .order_by('-created')[:50]
         return context
 
 
