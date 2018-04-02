@@ -6,7 +6,7 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{% url 'grafana:org-list' %}">Organizations</a></li>
-    <li class="breadcrumb-item active" aria-current="page">{{object.name}}</li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'grafana:org-detail' object.pk %}">{{object.name}}</a></li>
   </ol>
 </nav>
 
@@ -35,7 +35,7 @@
             <td>
                 <ul>
                 {% for tag in dash.tag_set.all %}
-                    <li>{{tag.term}}</li>
+                    <li><a href="{% url 'grafana:org-detail' object.pk %}?tag={{tag.term}}">{{tag.term}}</a></li>
                 {% endfor %}
                 </ul>
             </td>
@@ -49,8 +49,9 @@
     <table class="table table-bordered">
         <tr>
             <th>Title</th>
-            <th>Tags</th>
-            <th>Last Updated</th>
+            <th>Created</th>
+            <th>Created By</th>
+            <th>Message</th>
         </tr>
     {% for version in version_set %}
         <tr>

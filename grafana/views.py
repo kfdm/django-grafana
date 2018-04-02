@@ -25,7 +25,20 @@ class OrganizationDetailView(PermissionRequiredMixin, DetailView):
         context['version_set'] = models.DashboardVersion.objects\
             .filter(dashboard__organization=self.object)\
             .prefetch_related('dashboard', 'created_by')\
-            .order_by('-created')[:50]
+            .order_by('-created')
+
+        if 'tag' in self.request.GET:
+            context['dashboard_set'] = context['dashboard_set'].filter(
+                tag_set__term=self.request.GET['tag']
+            )
+            context['version_set'] = context['version_set'].filter(
+                dashboard__tag_set__term=self.request.GET['tag']
+            )
+
+
+        # We have to do our slice last
+        context['version_set'] = context['version_set'][:50]
+
         return context
 
 
