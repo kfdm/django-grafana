@@ -1,5 +1,6 @@
 import json
 
+from django.conf import settings
 from django.db import models
 
 
@@ -52,6 +53,12 @@ class Dashboard(models.Model):
 
     def json(self):
         return json.loads(self.data)
+
+    def get_public_link(self):
+        return '{base}/d/{d.uid}?orgId={d.organization_id}'.format(
+            base=settings.GRAFANA_URL,
+            d=self,
+        )
 
 
 class DashboardTag(models.Model):

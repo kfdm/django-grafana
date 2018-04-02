@@ -31,6 +31,7 @@
 {% for dash in dashboard_set.all %}
         <tr>
             <td><a href="{% url 'grafana:dash-detail' dash.pk %}">{{ dash.title }}</a></td>
+            <td><a href="{{dash.get_public_link}}">View on Grafana</a></td>
             <td>
                 <ul>
                 {% for tag in dash.tag_set.all %}
