@@ -2,6 +2,7 @@ from grafana import views
 
 from django.conf.urls import url
 
+app_name = 'grafana'
 urlpatterns = [
     url(r'^$', views.OrganizationListView.as_view(), name='org-list'),
     url(r'^org/(?P<pk>.*)$', views.OrganizationDetailView.as_view(), name='org-detail'),
