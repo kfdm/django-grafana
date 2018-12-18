@@ -150,6 +150,35 @@ class DataSource(models.Model):
         db_table = 'data_source'
         unique_together = (('organization', 'name'),)
 
+class DashboardSnapshot(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+    key = models.CharField(unique=True, max_length=190)
+    delete_key = models.CharField(unique=True, max_length=190)
+    organization = models.ForeignKey(
+        "grafana.Organization",
+        db_column="org_id",
+        on_delete=models.CASCADE,
+        related_name="snapshot_set",
+    )
+    created_by = models.ForeignKey(
+        "grafana.User",
+        db_column="user_id",
+        on_delete=models.CASCADE,
+        related_name="snapshot_set",
+    )
+    external = models.IntegerField()
+    external_url = models.CharField(max_length=255)
+    dashboard = models.TextField()
+    expires = models.DateTimeField()
+    created = models.DateTimeField()
+    updated = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = "dashboard_snapshot"
+
+
 class Annotation(models.Model):
     id = models.BigAutoField(primary_key=True)
     title = models.TextField()

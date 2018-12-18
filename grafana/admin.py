@@ -23,6 +23,16 @@ class DashboardAdmin(admin.ModelAdmin):
     list_select_related = False
     readonly_fields = ('data', 'created', 'updated', 'updated_by', 'created_by')
 
+
+@admin.register(models.DashboardSnapshot)
+class SnapshotAdmin(admin.ModelAdmin):
+    list_display = ("name", "organization", "created_by", "created", "expires")
+    list_filter = (
+        ("organization", admin.RelatedOnlyFieldListFilter),
+        ("created_by", admin.RelatedOnlyFieldListFilter),
+    )
+
+
 @admin.register(models.Annotation)
 class AnnotationAdmin(admin.ModelAdmin):
     list_display = ("title", "organization", "tags", "type", "_created", "_updated")
