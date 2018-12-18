@@ -1,5 +1,6 @@
 from django.contrib import admin
 from grafana import models
+import datetime
 
 
 @admin.register(models.DataSource)
@@ -21,3 +22,17 @@ class DashboardAdmin(admin.ModelAdmin):
     list_filter = ('organization',)
     list_select_related = False
     readonly_fields = ('data', 'created', 'updated', 'updated_by', 'created_by')
+
+@admin.register(models.Annotation)
+class AnnotationAdmin(admin.ModelAdmin):
+    list_display = ("title", "organization", "tags", "type", "_created", "_updated")
+    list_filter = (
+        ("organization", admin.RelatedOnlyFieldListFilter),
+        ("user", admin.RelatedOnlyFieldListFilter),
+    )
+
+    def _created(self, obj):
+        return datetime.datetime.fromtimestamp(obj.created / 1000)
+
+    def _updated(self, obj):
+        return datetime.datetime.fromtimestamp(obj.updated / 1000)

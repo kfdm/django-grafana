@@ -149,3 +149,31 @@ class DataSource(models.Model):
         managed = False
         db_table = 'data_source'
         unique_together = (('organization', 'name'),)
+
+class Annotation(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    title = models.TextField()
+    text = models.TextField()
+    tags = models.CharField(max_length=500)
+    type = models.CharField(max_length=25)
+
+    created = models.IntegerField()
+    updated = models.IntegerField()
+
+    organization = models.ForeignKey(
+        "grafana.Organization",
+        db_column="org_id",
+        on_delete=models.CASCADE,
+        related_name="annotation_set",
+    )
+
+    user = models.ForeignKey(
+        "grafana.User",
+        db_column="user_id",
+        on_delete=models.CASCADE,
+        related_name="annotation_set",
+    )
+
+    class Meta:
+        managed = False
+        db_table = "annotation"
