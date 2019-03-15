@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load grafana %}
+{% block content %}
+
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'grafana:org-list' %}">Organizations</a></li>
+        <li class="breadcrumb-item active" aria-current="page">
+            <a href="{% url 'grafana:org-detail' object.organization.pk %}">{{ object.organization.name }}</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            <a href="{% url 'grafana:dash-detail' object.pk %}">
+                {{object.title}}
+            </a>
+        </li>
+    </ol>
+</nav>
+
+<a href="{{object.get_public_link}}">View on Grafana</a>
+
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation">
+        <a href="#json" aria-controls="json" role="tab" data-toggle="tab">Original</a>
+    </li>
+    <li role="presentation" class="active">
+        <a href="#mutators" aria-controls="json" role="tab" data-toggle="tab">Mutators</a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane" id="json">
+        <pre>{{object.json|json}}</pre>
+    </div>
+
+    <div role="tabpanel" class="tab-pane active" id="mutators">
+        <table class="table">
+            <form method="post" action="{% url 'grafana:dash-mutate' object.pk %}">
+                {% csrf_token %}
+                <input name="driver" value="{{driver.model}}" type="hidden" />
+                <input name="action" value="apply" type="hidden" />
+                <tr>
+                    <td>{{driver.name}}</td>
+                    <td>{{driver.model}}</td>
+                    <td>
+                        <button class="btn btn-warning">Execute</button>
+                    </td>
+                </tr>
+            </form>
+        </table>
+        <pre>{% json_diff object.json output %}</pre>
+    </div>
+</div>
+
+{% endblock %}

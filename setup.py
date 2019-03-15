@@ -28,5 +28,9 @@ setup(
     entry_points={
         'powerplug.apps': ['grafana = grafana'],
         'powerplug.urls': ['grafana = grafana.urls'],
+        'grafana.mutator': [
+            'refresh = grafana.mutators.refresh:Refresh',
+            'null = grafana.mutators.null:Null',
+        ],
     },
 )
