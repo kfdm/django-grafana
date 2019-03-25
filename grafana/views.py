@@ -1,10 +1,8 @@
-import os
-
-
-from grafana import models, mutators, client
+from grafana import client, models, mutators
 
 from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import redirect, render
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
@@ -15,7 +13,8 @@ class OrganizationListView(PermissionRequiredMixin, ListView):
     permission_required = "grafana.view_org"
 
     def get_queryset(self):
-        return self.model.objects.filter(apikey_set__name="django")
+        domain = get_current_site().domain
+        return self.model.objects.filter(apikey_set__name=domain)
 
 
 class OrganizationDetailView(PermissionRequiredMixin, DetailView):
