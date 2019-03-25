@@ -13,7 +13,7 @@ class OrganizationListView(PermissionRequiredMixin, ListView):
     permission_required = "grafana.view_org"
 
     def get_queryset(self):
-        domain = get_current_site().domain
+        domain = get_current_site(None).domain
         return self.model.objects.filter(apikey_set__name=domain)
 
 
