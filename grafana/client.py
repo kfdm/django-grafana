@@ -3,6 +3,8 @@ import os
 import requests
 from requests.auth import AuthBase
 
+from django.conf import settings
+
 
 class GrafanaAuth(AuthBase):
     def __init__(self, org):
@@ -10,6 +12,7 @@ class GrafanaAuth(AuthBase):
 
     def __call__(self, r):
         r.headers["Authorization"] = "Bearer " + os.environ["GRAFANA_TOKEN"]
+        r.headers["User-agent"] = getattr(settings, "USER_AGENT", "django-grafana")
         return r
 
 
