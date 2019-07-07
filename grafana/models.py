@@ -2,6 +2,7 @@ import json
 
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 
 
 # Referenced using 'inspectdb --database grafana'
@@ -18,6 +19,9 @@ class Organization(models.Model):
     class Meta:
         managed = False
         db_table = 'org'
+
+    def get_absolute_url(self):
+        return reverse('grafana:org-detail', args=(self.pk,))
 
 
 class Dashboard(models.Model):
@@ -59,6 +63,9 @@ class Dashboard(models.Model):
             base=settings.GRAFANA_URL,
             d=self,
         )
+
+    def get_absolute_url(self):
+        return reverse('grafana:dash-detail', args=(self.pk,))
 
 
 class DashboardTag(models.Model):
