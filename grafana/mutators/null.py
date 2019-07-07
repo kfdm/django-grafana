@@ -2,15 +2,17 @@ from grafana.mutators import Mutator
 
 
 class Null(Mutator):
-    name = "Default Zero"
+    """
+    Default Zero
+
+    Reset pointers to Zero
+    """
 
     def mutate(self, data):
-        data.setdefault("rows", [])
-        data.setdefault("panels", {})
-        for row in data["rows"]:
-            row.setdefault("panels", [])
-            for panel in row["panels"]:
+        for panel in data.setdefault("panels", []):
+            if panel["type"] == "row":
+                for subpanel in panel.get("panels", []):
+                    subpanel["nullPointMode"] = "null"
+            else:
                 panel["nullPointMode"] = "null"
-        for panel in data["panels"]:
-            panel["nullPointMode"] = "null"
         return data
