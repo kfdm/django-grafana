@@ -213,3 +213,33 @@ class Annotation(models.Model):
     class Meta:
         managed = False
         db_table = "annotation"
+
+
+class Invite(models.Model):
+    organization = models.ForeignKey(
+        "grafana.Organization",
+        db_column="org_id",
+        on_delete=models.CASCADE,
+        related_name="invite_set",
+    )
+    version = models.IntegerField()
+    email = models.CharField(max_length=190)
+    name = models.CharField(max_length=255, blank=True, null=True)
+    role = models.CharField(max_length=20, blank=True, null=True)
+    code = models.CharField(max_length=190)
+    status = models.CharField(max_length=20)
+    invited_by = models.ForeignKey(
+        "grafana.User",
+        db_column="invited_by_user_id",
+        on_delete=models.CASCADE,
+        related_name="+",
+    )
+    email_sent = models.IntegerField()
+    email_sent_on = models.DateTimeField(blank=True, null=True)
+    created = models.DateTimeField()
+    updated = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = "temp_user"
+
