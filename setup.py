@@ -24,6 +24,7 @@ setup(
     install_requires=[
         'pytz',
         'requests',
+        'django>=2.0'
     ],
     entry_points={
         'powerplug.apps': ['grafana = grafana'],

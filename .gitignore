@@ -1,5 +1,6 @@
 __pycache__
+.venv
 *.egg-info
 *.pyc
-venv
-.tox
+build
+dist
