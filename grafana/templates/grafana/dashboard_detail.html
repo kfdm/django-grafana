@@ -2,7 +2,6 @@
 {% load grafana %}
 {% block content %}
 
-
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{% url 'grafana:org-list' %}">Organizations</a></li>
@@ -19,15 +18,15 @@
 
 <a href="{{object.get_public_link}}">View on Grafana</a>
 
-<ul class="nav nav-tabs" role="tablist">
-  <li role="presentation" class="active">
-    <a href="#json" aria-controls="json" role="tab" data-toggle="tab">JSON</a>
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" href="#json" data-toggle="tab">JSON</a>
   </li>
-  <li role="presentation">
-    <a href="#mutators" aria-controls="json" role="tab" data-toggle="tab">Mutators</a>
+  <li class="nav-item">
+    <a class="nav-link" href="#mutators" data-toggle="tab">Mutators</a>
   </li>
-  <li role="presentation">
-    <a href="#versions" aria-controls="versions" role="tab" data-toggle="tab">Versions</a>
+  <li class="nav-item">
+    <a class="nav-link" href="#versions" data-toggle="tab">Versions</a>
   </li>
 </ul>
 
@@ -36,7 +35,7 @@
     <pre>{{object.json|json}}</pre>
   </div>
 
-  <div role="tabpanel" class="tab-pane active" id="mutators">
+  <div role="tabpanel" class="tab-pane" id="mutators">
     <table class="table">
       {% for driver in mutators %}
       <form method="post" action="{% url 'grafana:dash-mutate' object.pk %}">
@@ -55,10 +54,17 @@
     </table>
   </div>
 
-  <div role="tabpanel" class="tab-pane active" id="versions">
+  <div role="tabpanel" class="tab-pane" id="versions">
     <table class="table">
-      {% for version in object.version_set.all|dictsort:'created' %}
       <tr>
+        <th>Version</th>
+        <th>Created</th>
+        <th>Created by</th>
+        <th>Message</th>
+      </tr>
+      {% for version in object.version_set.all|dictsortreversed:'created' %}
+      <tr>
+        <td>{{version.version}}</td>
         <td>{{version.created}}</td>
         <td>{{version.created_by.login}}</td>
         <td>{{version.message}}</td>
