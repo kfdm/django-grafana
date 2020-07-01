@@ -1,11 +1,12 @@
 from grafana import views
 
-from django.conf.urls import url
+from django.urls import path
 
-app_name = 'grafana'
+app_name = "grafana"
 urlpatterns = [
-    url(r'^$', views.OrganizationListView.as_view(), name='org-list'),
-    url(r'^org/(?P<pk>.*)$', views.OrganizationDetailView.as_view(), name='org-detail'),
-    url(r'^dash/(?P<pk>.*)/mutate$', views.DashboardMutate.as_view(), name='dash-mutate'),
-    url(r'^dash/(?P<pk>.*)$', views.DashboardDetailView.as_view(), name='dash-detail'),
+    path("", views.OrganizationListView.as_view(), name="org-list"),
+    path("org/<int:pk>", views.OrganizationDetailView.as_view(), name="org-detail"),
+    path("dash/<int:pk>/mutate", views.DashboardMutate.as_view(), name="dash-mutate"),
+    path("dash/<int:pk>", views.DashboardDetailView.as_view(), name="dash-detail"),
+    path("version/<int:pk>", views.RevisionVersion.as_view(), name="version-detail"),
 ]

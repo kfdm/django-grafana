@@ -58,7 +58,7 @@ class DashboardDetailView(PermissionRequiredMixin, DetailView):
         return context
 
 
-class DashboardMutate(DetailView):
+class DashboardMutate(PermissionRequiredMixin, DetailView):
     model = models.Dashboard
     permission_required = "grafana.view_org"
     template_name = "grafana/dashboard_mutate.html"
@@ -88,3 +88,10 @@ class DashboardMutate(DetailView):
                 "output": driver.mutate(obj.json()),
             },
         )
+
+
+class RevisionVersion(PermissionRequiredMixin, DetailView):
+    model = models.DashboardVersion
+    permission_required = "grafana.view_org"
+    template_name = "grafana/version_detail.html"
+

@@ -104,6 +104,12 @@ class DashboardVersion(models.Model):
         managed = False
         db_table = 'dashboard_version'
 
+    def json(self):
+        return json.loads(self.data)
+
+    def get_absolute_url(self):
+        return reverse('grafana:version-detail', args=(self.pk,))
+
 
 class User(models.Model):
     version = models.IntegerField()

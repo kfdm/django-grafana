@@ -64,7 +64,7 @@
       </tr>
       {% for version in object.version_set.all|dictsortreversed:'created' %}
       <tr>
-        <td>{{version.version}}</td>
+        <td><a href="{{version.get_absolute_url}}">{{version.version}}</a></td>
         <td>{{version.created}}</td>
         <td>{{version.created_by.login}}</td>
         <td>{{version.message}}</td>

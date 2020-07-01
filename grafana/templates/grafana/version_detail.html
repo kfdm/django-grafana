@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load grafana %}
+{% block content %}
+
+<table class="table table-bordered">
+    <tr>
+        <th>Dashboard</th>
+        <th>View</th>
+        <th>Revision</th>
+        <th>Created</th>
+        <th>Created By</th>
+        <th>Message</th>
+    </tr>
+
+    <tr>
+        <td><a href="{% url 'grafana:dash-detail' object.dashboard.pk %}">{{ object.dashboard.title }}</a></td>
+        <td><a href="{{object.dashboard.get_public_link}}">View on Grafana</a></td>
+        <td><a href="{{object.get_absolute_url}}">{{object.version}}</a></td>
+        <td>{{object.created}}</td>
+        <td>{{object.created_by.login}}</td>
+        <td>{{object.message}}</td>
+    </tr>
+
+</table>
+
+<pre>{{object.json|json}}</pre>
+
+{% endblock %}

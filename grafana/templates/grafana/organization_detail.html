@@ -59,7 +59,7 @@
       <tr>
         <td><a href="{% url 'grafana:dash-detail' version.dashboard.pk %}">{{ version.dashboard.title }}</a></td>
         <td><a href="{{version.dashboard.get_public_link}}">View on Grafana</a></td>
-        <td>{{version.version}}</td>
+        <td><a href="{{version.get_absolute_url}}">{{version.version}}</a></td>
         <td>{{version.created}}</td>
         <td>{{version.created_by.login}}</td>
         <td>{{version.message}}</td>
