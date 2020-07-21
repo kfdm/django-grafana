@@ -249,3 +249,46 @@ class Invite(models.Model):
         managed = False
         db_table = "temp_user"
 
+
+class Team(models.Model):
+    name = models.CharField(max_length=190)
+    organization = models.ForeignKey(
+        "grafana.Organization",
+        db_column="org_id",
+        on_delete=models.CASCADE,
+        related_name="team_set",
+    )
+    created = models.DateTimeField()
+    updated = models.DateTimeField()
+    email = models.CharField(max_length=190, blank=True, null=True)
+    members = models.ManyToManyField(User, through="TeamMember")
+
+    class Meta:
+        managed = False
+        db_table = "team"
+        unique_together = (("organization", "name"),)
+
+
+class TeamMember(models.Model):
+    organization = models.ForeignKey(
+        "grafana.Organization",
+        db_column="org_id",
+        on_delete=models.CASCADE,
+        related_name="+",
+    )
+    team = models.ForeignKey(
+        "grafana.Team", db_column="team_id", on_delete=models.CASCADE, related_name="+"
+    )
+    user = models.ForeignKey(
+        "grafana.User", db_column="user_id", on_delete=models.CASCADE, related_name="+"
+    )
+    created = models.DateTimeField()
+    updated = models.DateTimeField()
+    external = models.IntegerField(blank=True, null=True)
+    permission = models.SmallIntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = "team_member"
+        unique_together = (("organization", "team", "user"),)
+
