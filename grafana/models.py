@@ -202,6 +202,10 @@ class Annotation(models.Model):
     created = models.IntegerField()
     updated = models.IntegerField()
 
+    alert_id = models.IntegerField()
+    epoch = models.IntegerField()
+    epoch_end = models.IntegerField()
+
     organization = models.ForeignKey(
         "grafana.Organization",
         db_column="org_id",

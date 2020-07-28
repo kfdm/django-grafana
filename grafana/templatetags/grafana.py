@@ -1,6 +1,6 @@
 import difflib
 import json
-
+import datetime
 from django import template
 
 register = template.Library()
@@ -19,3 +19,9 @@ def json_diff(a, b):
             json.dumps(b, indent=2).split('\n')
         )
     )
+
+
+@register.filter
+def from_epoch(epoch):
+    ts = datetime.datetime.fromtimestamp(epoch / 1000)
+    return ts

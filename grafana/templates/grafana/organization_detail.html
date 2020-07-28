@@ -2,7 +2,6 @@
 
 {% block content %}
 
-
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{% url 'grafana:org-list' %}">Organizations</a></li>
@@ -12,60 +11,37 @@
 
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link active" href="#dashboards" data-toggle="tab">Dashboards</a>
+    <a class="nav-link active" href="{% url 'grafana:org-detail' object.pk %}">Dashboards</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#versions" data-toggle="tab">Versions</a>
+    <a class="nav-link" href="{% url 'grafana:org-versions' object.pk %}">Versions</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'grafana:org-annotations' object.pk %}">Annotations</a>
   </li>
 </ul>
 
-<div class="tab-content">
-  <div role="tabpanel" class="tab-pane active" id="dashboards">
-    <table class="table table-bordered">
-        <tr>
-            <th>Title</th>
-            <th>View</th>
-            <th>Tags</th>
-            <th>Last Updated</th>
-        </tr>
-{% for dash in dashboard_set.all %}
-        <tr>
-            <td><a href="{% url 'grafana:dash-detail' dash.pk %}">{{ dash.title }}</a></td>
-            <td><a href="{{dash.get_public_link}}">View on Grafana</a></td>
-            <td>
-                <ul>
-                {% for tag in dash.tag_set.all %}
-                    <li><a href="{% url 'grafana:org-detail' object.pk %}?tag={{tag.term}}">{{tag.term}}</a></li>
-                {% endfor %}
-                </ul>
-            </td>
-            <td>{{dash.updated}}</td>
-        </tr>
-{% endfor %}
-    </table>
-  </div>
+<table class="table table-bordered">
+  <tr>
+    <th>Title</th>
+    <th>View</th>
+    <th>Tags</th>
+    <th>Last Updated</th>
+  </tr>
+  {% for dash in dashboard_set.all %}
+  <tr>
+    <td><a href="{% url 'grafana:dash-detail' dash.pk %}">{{ dash.title }}</a></td>
+    <td><a href="{{dash.get_public_link}}">View on Grafana</a></td>
+    <td>
+      <ul>
+        {% for tag in dash.tag_set.all %}
+        <li><a href="{% url 'grafana:org-detail' object.pk %}?tag={{tag.term}}">{{tag.term}}</a></li>
+        {% endfor %}
+      </ul>
+    </td>
+    <td>{{dash.updated}}</td>
+  </tr>
+  {% endfor %}
+</table>
 
-  <div role="tabpanel" class="tab-pane" id="versions">
-    <table class="table table-bordered">
-      <tr>
-        <th>Dashboard</th>
-        <th>View</th>
-        <th>Revision</th>
-        <th>Created</th>
-        <th>Created By</th>
-        <th>Message</th>
-      </tr>
-      {% for version in version_set %}
-      <tr>
-        <td><a href="{% url 'grafana:dash-detail' version.dashboard.pk %}">{{ version.dashboard.title }}</a></td>
-        <td><a href="{{version.dashboard.get_public_link}}">View on Grafana</a></td>
-        <td><a href="{{version.get_absolute_url}}">{{version.version}}</a></td>
-        <td>{{version.created}}</td>
-        <td>{{version.created_by.login}}</td>
-        <td>{{version.message}}</td>
-      </tr>
-      {% endfor %}
-    </table>
-  </div>
-</div>
 {% endblock %}

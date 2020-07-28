@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load grafana %}
+{% block content %}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'grafana:org-list' %}">Organizations</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'grafana:org-detail' object.pk %}">{{object.name}}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Annotations</li>
+    </ol>
+</nav>
+
+<div class="panel panel-default">
+    <table class="table table-bordered">
+        {% for annotation in object_list|dictsort:'id' %}
+        <tr>
+            <td>
+                {{annotation.tags}}
+                <br>
+                {{annotation.epoch|from_epoch}}
+                <br>
+                {{annotation.epoch_end|from_epoch}}
+            </td>
+            <td>{{annotation.text}}</td>
+            <td>{{annotation.user}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

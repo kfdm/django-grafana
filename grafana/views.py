@@ -28,22 +28,11 @@ class OrganizationDetailView(PermissionRequiredMixin, DetailView):
             .prefetch_related("organization", "tag_set")
             .order_by("title")
         )
-        context["version_set"] = (
-            models.DashboardVersion.objects.filter(dashboard__organization=self.object)
-            .prefetch_related("dashboard", "created_by")
-            .order_by("-created")
-        )
 
         if "tag" in self.request.GET:
             context["dashboard_set"] = context["dashboard_set"].filter(
                 tag_set__term=self.request.GET["tag"]
             )
-            context["version_set"] = context["version_set"].filter(
-                dashboard__tag_set__term=self.request.GET["tag"]
-            )
-
-        # We have to do our slice last
-        context["version_set"] = context["version_set"][:50]
 
         return context
 
@@ -94,4 +83,41 @@ class RevisionVersion(PermissionRequiredMixin, DetailView):
     model = models.DashboardVersion
     permission_required = "grafana.view_org"
     template_name = "grafana/version_detail.html"
+
+
+class VersionList(PermissionRequiredMixin, ListView):
+    model = models.DashboardVersion
+    permission_required = "grafana.view_org"
+    template_name = "grafana/version_list.html"
+    paginate_by = 100
+
+    def get_queryset(self):
+        return (
+            self.model.objects.filter(dashboard__organization=self.kwargs["pk"])
+            .prefetch_related("dashboard", "created_by")
+            .order_by("-created")
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["object"] = models.Organization.objects.get(pk=self.kwargs["pk"])
+        return context
+
+
+class AnnotationList(PermissionRequiredMixin, ListView):
+    model = models.Annotation
+    permission_required = "grafana.view_annotations"
+    paginate_by = 100
+
+    def get_queryset(self):
+        return (
+            self.model.objects.filter(alert_id=0, organization_id=self.kwargs["pk"])
+            .prefetch_related("organization", "user")
+            .order_by("-created")
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["object"] = models.Organization.objects.get(pk=self.kwargs["pk"])
+        return context
 
