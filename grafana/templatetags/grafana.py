@@ -25,3 +25,13 @@ def json_diff(a, b):
 def from_epoch(epoch):
     ts = datetime.datetime.fromtimestamp(epoch / 1000)
     return ts
+
+@register.filter
+def role_class(role):
+    if role == 'Admin':
+        return 'danger'
+    if role == 'Editor':
+        return 'warning'
+    if role == 'Viewer':
+        return 'info'
+    return 'secondary'
