@@ -117,12 +117,16 @@ class User(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     email = models.CharField(max_length=190, blank=True, null=True)
 
+    created = models.DateTimeField()
+    updated = models.DateTimeField()
+    last_seen_at = models.DateTimeField(null=True)
+
     def __str__(self):
         return self.login
 
     class Meta:
         managed = False
-        db_table = 'user'
+        db_table = "user"
 
 
 class ApiKey(models.Model):

@@ -15,12 +15,14 @@
         <th>User</th>
         <th>Email</th>
         <th>Role</th>
+        <th>Last Seen</th>
     </tr>
     {% for member in object_list %}
     <tr>
         <td>{{member.user.login}}</td>
         <td>{{member.user.email}}</td>
         <td class="table-{{member.role|role_class}}">{{member.role}}</td>
+        <td>{{member.user.last_seen_at}}</td>
     </tr>
     {% endfor %}
 </table>
