@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load grafana %}
+{% block content %}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'grafana:org-list' %}">Organizations</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'grafana:org-detail' object.pk %}">{{object.name}}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Versions</li>
+    </ol>
+</nav>
+
+<table class="table table-sm">
+    <tr>
+        <th>User</th>
+        <th>Email</th>
+        <th>Role</th>
+    </tr>
+    {% for member in object_list %}
+    <tr>
+        <td>{{member.user.login}}</td>
+        <td>{{member.user.email}}</td>
+        <td class="table-{{member.role|role_class}}">{{member.role}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

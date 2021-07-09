@@ -115,6 +115,7 @@ class User(models.Model):
     version = models.IntegerField()
     login = models.CharField(unique=True, max_length=190)
     name = models.CharField(max_length=255, blank=True, null=True)
+    email = models.CharField(max_length=190, blank=True, null=True)
 
     def __str__(self):
         return self.login
@@ -296,3 +297,20 @@ class TeamMember(models.Model):
         db_table = "team_member"
         unique_together = (("organization", "team", "user"),)
 
+
+class OrgMember(models.Model):
+    organization = models.ForeignKey(
+        "grafana.Organization",
+        db_column="org_id",
+        on_delete=models.CASCADE,
+        related_name="+",
+    )
+    user = models.ForeignKey(
+        "grafana.User", db_column="user_id", on_delete=models.CASCADE, related_name="+",
+    )
+    created = models.DateTimeField()
+    updated = models.DateTimeField()
+    role = models.CharField(max_length=20)
+    class Meta:
+        managed = False
+        db_table = "org_user"
