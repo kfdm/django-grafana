@@ -121,6 +121,7 @@ class AnnotationList(PermissionRequiredMixin, ListView):
         context["object"] = models.Organization.objects.get(pk=self.kwargs["pk"])
         return context
 
+
 class UserList(PermissionRequiredMixin, ListView):
     model = models.OrgMember
     permission_required = "grafana.view_org"
@@ -131,8 +132,9 @@ class UserList(PermissionRequiredMixin, ListView):
         return (
             self.model.objects.filter(organization_id=self.kwargs["pk"])
             .prefetch_related("organization", "user")
-            .order_by("role", 'user__name')
+            .order_by("role", "user__name")
         )
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["object"] = models.Organization.objects.get(pk=self.kwargs["pk"])

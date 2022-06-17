@@ -18,10 +18,10 @@ class Organization(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'org'
+        db_table = "org"
 
     def get_absolute_url(self):
-        return reverse('grafana:org-detail', args=(self.pk,))
+        return reverse("grafana:org-detail", args=(self.pk,))
 
 
 class Dashboard(models.Model):
@@ -30,48 +30,48 @@ class Dashboard(models.Model):
     title = models.CharField(max_length=189)
     data = models.TextField()
     organization = models.ForeignKey(
-        'grafana.Organization',
-        db_column='org_id',
+        "grafana.Organization",
+        db_column="org_id",
         on_delete=models.CASCADE,
     )
     created = models.DateTimeField()
     updated = models.DateTimeField()
     updated_by = models.ForeignKey(
-        'grafana.User',
-        db_column='updated_by',
+        "grafana.User",
+        db_column="updated_by",
         on_delete=models.CASCADE,
-        related_name='+',
+        related_name="+",
     )
     created_by = models.ForeignKey(
-        'grafana.User',
-        db_column='created_by',
+        "grafana.User",
+        db_column="created_by",
         on_delete=models.CASCADE,
-        related_name='dashboard_set',
+        related_name="dashboard_set",
     )
     gnet_id = models.BigIntegerField(blank=True, null=True)
     uid = models.CharField(max_length=40, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'dashboard'
+        db_table = "dashboard"
 
     def json(self):
         return json.loads(self.data)
 
     def get_public_link(self):
-        return '{base}/d/{d.uid}?orgId={d.organization_id}'.format(
+        return "{base}/d/{d.uid}?orgId={d.organization_id}".format(
             base=settings.GRAFANA_URL,
             d=self,
         )
 
     def get_absolute_url(self):
-        return reverse('grafana:dash-detail', args=(self.pk,))
+        return reverse("grafana:dash-detail", args=(self.pk,))
 
 
 class DashboardTag(models.Model):
     dashboard = models.ForeignKey(
-        'grafana.Dashboard',
-        db_column='dashboard_id',
+        "grafana.Dashboard",
+        db_column="dashboard_id",
         on_delete=models.CASCADE,
         related_name="tag_set",
     )
@@ -79,36 +79,36 @@ class DashboardTag(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'dashboard_tag'
+        db_table = "dashboard_tag"
 
 
 class DashboardVersion(models.Model):
     dashboard = models.ForeignKey(
-        'grafana.Dashboard',
-        db_column='dashboard_id',
+        "grafana.Dashboard",
+        db_column="dashboard_id",
         on_delete=models.CASCADE,
         related_name="version_set",
     )
     version = models.IntegerField()
     created = models.DateTimeField()
     created_by = models.ForeignKey(
-        'grafana.User',
-        db_column='created_by',
+        "grafana.User",
+        db_column="created_by",
         on_delete=models.CASCADE,
-        related_name='+',
+        related_name="+",
     )
     message = models.TextField()
     data = models.TextField()
 
     class Meta:
         managed = False
-        db_table = 'dashboard_version'
+        db_table = "dashboard_version"
 
     def json(self):
         return json.loads(self.data)
 
     def get_absolute_url(self):
-        return reverse('grafana:version-detail', args=(self.pk,))
+        return reverse("grafana:version-detail", args=(self.pk,))
 
 
 class User(models.Model):
@@ -131,8 +131,8 @@ class User(models.Model):
 
 class ApiKey(models.Model):
     organization = models.ForeignKey(
-        'grafana.Organization',
-        db_column='org_id',
+        "grafana.Organization",
+        db_column="org_id",
         on_delete=models.CASCADE,
         related_name="apikey_set",
     )
@@ -144,13 +144,13 @@ class ApiKey(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'api_key'
+        db_table = "api_key"
 
 
 class DataSource(models.Model):
     organization = models.ForeignKey(
-        'grafana.Organization',
-        db_column='org_id',
+        "grafana.Organization",
+        db_column="org_id",
         on_delete=models.CASCADE,
         related_name="datasource_set",
     )
@@ -165,8 +165,9 @@ class DataSource(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'data_source'
-        unique_together = (('organization', 'name'),)
+        db_table = "data_source"
+        unique_together = (("organization", "name"),)
+
 
 class DashboardSnapshot(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -310,11 +311,15 @@ class OrgMember(models.Model):
         related_name="+",
     )
     user = models.ForeignKey(
-        "grafana.User", db_column="user_id", on_delete=models.CASCADE, related_name="+",
+        "grafana.User",
+        db_column="user_id",
+        on_delete=models.CASCADE,
+        related_name="+",
     )
     created = models.DateTimeField()
     updated = models.DateTimeField()
     role = models.CharField(max_length=20)
+
     class Meta:
         managed = False
         db_table = "org_user"
