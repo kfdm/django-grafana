@@ -1,9 +1,8 @@
-import json
+import warnings
 
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
-
 
 # Referenced using 'inspectdb --database grafana'
 
@@ -28,7 +27,7 @@ class Dashboard(models.Model):
     version = models.IntegerField()
     slug = models.CharField(max_length=189)
     title = models.CharField(max_length=189)
-    data = models.TextField()
+    data = models.JSONField()
     organization = models.ForeignKey(
         "grafana.Organization",
         db_column="org_id",
@@ -56,7 +55,8 @@ class Dashboard(models.Model):
         db_table = "dashboard"
 
     def json(self):
-        return json.loads(self.data)
+        warnings.warn("Switch to native JSONField", DeprecationWarning, stacklevel=1)
+        return self.data
 
     def get_public_link(self):
         return "{base}/d/{d.uid}?orgId={d.organization_id}".format(
@@ -98,14 +98,15 @@ class DashboardVersion(models.Model):
         related_name="+",
     )
     message = models.TextField()
-    data = models.TextField()
+    data = models.JSONField()
 
     class Meta:
         managed = False
         db_table = "dashboard_version"
 
     def json(self):
-        return json.loads(self.data)
+        warnings.warn("Switch to native JSONField", DeprecationWarning, stacklevel=1)
+        return self.data
 
     def get_absolute_url(self):
         return reverse("grafana:version-detail", args=(self.pk,))
@@ -159,7 +160,7 @@ class DataSource(models.Model):
     name = models.CharField(max_length=190)
     access = models.CharField(max_length=255)
     url = models.CharField(max_length=255)
-    json_data = models.TextField(blank=True, null=True)
+    json_data = models.JSONField(blank=True, null=True)
     created = models.DateTimeField()
     updated = models.DateTimeField()
 
