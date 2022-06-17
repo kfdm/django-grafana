@@ -1,0 +1,4 @@
+# pyupgrade --py36-plus grafana/**/*.py
+47750ce66acca519c9d4b637c4ce83eb6399bd9c
+# Black
+2e2c717d9f06dc9d71c6b736e83cd092cbc32b39 
