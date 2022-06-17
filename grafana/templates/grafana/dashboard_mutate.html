@@ -30,7 +30,7 @@
 
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane" id="json">
-        <pre>{{object.json|json}}</pre>
+        <pre>{{object.data|json}}</pre>
     </div>
 
     <div role="tabpanel" class="tab-pane active" id="mutators">
@@ -49,7 +49,7 @@
                 </tr>
             </form>
         </table>
-        <pre>{% json_diff object.json output %}</pre>
+        <pre>{% json_diff object.data output %}</pre>
     </div>
 </div>
 

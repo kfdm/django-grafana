@@ -66,7 +66,7 @@ class DashboardMutate(PermissionRequiredMixin, DetailView):
         obj = self.get_object()
 
         if "action" in request.POST:
-            client.dashboard(obj, driver.mutate(obj.json()))
+            client.dashboard(obj, driver.mutate(obj.data))
 
         return render(
             request,
@@ -74,7 +74,7 @@ class DashboardMutate(PermissionRequiredMixin, DetailView):
             context={
                 "object": obj,
                 "driver": driver,
-                "output": driver.mutate(obj.json()),
+                "output": driver.mutate(obj.data),
             },
         )
 
