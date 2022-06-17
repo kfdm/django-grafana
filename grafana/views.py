@@ -22,7 +22,7 @@ class OrganizationDetailView(PermissionRequiredMixin, DetailView):
     permission_required = "grafana.view_org"
 
     def get_context_data(self, **kwargs):
-        context = super(OrganizationDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context["dashboard_set"] = (
             models.Dashboard.objects.filter(organization=self.object)
             .prefetch_related("organization", "tag_set")
